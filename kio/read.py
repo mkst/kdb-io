@@ -4,6 +4,8 @@ import struct
 import util
 import handlers
 
+__all__ = ['readfile', 'readfiles']
+
 syms = {} # dictionary of sym files
 
 def readfiles(basedir, files):
@@ -30,7 +32,7 @@ def readdata(filename, data):
     if (header == "\xfe\x20"):
       offsets = (0,)+handlers.simple[7](data[16:])
       return handlers.nested[datatype](readfile(filename+"#"), zip(offsets, offsets[1:]))
-  if filename.endswith("#"):
+  if filename.endswith("#"):                                 # hash == data file
     return data
   if (header[0] == "\xfe"):                                  # enumerated file
     nul = data.find("\x00")                                  # first occurance of 0x00

@@ -45,6 +45,11 @@ sz:1000;
 `:data/lists/q set sz#`second$.z.p;
 `:data/lists/r set sz#`time$.z.p;
 
+-1"writing down mixed lists";
+`:data/mixedlists/a set (1b;"a";`awesomesym;1h;1i;1j;0Ng);
+`:data/mixedlists/b set (101b;"abc";`c`hello`c;1 2 3h;1 2 3i;1 2 3j;3?0Ng);
+`:data/mixedlists/c set (1010b;"a";`b;1 2 3 4 5 6i);
+
 /100k rows in simple or compressed column
 sz:100000;
 

@@ -1,6 +1,6 @@
 # kdb-io
 
-A WIP python library that allows reading of _some_ kdb files into native Python datatypes.
+A WIP python library that allows reading of _some_ q/kdb+ files into native Python datatypes.
 
 ## Howto
 
@@ -12,6 +12,7 @@ l32/ 4()core 3635MB mark carbon 127.0.1.1 NONEXPIRE
 
 writing down atoms
 writing down lists
+writing down mixed lists
 writing down simple
 writing down nested
 writing down compressed
@@ -23,11 +24,11 @@ $ python -m kio data/atoms/m
 ```
 Read within python terminal:
 ```
->>> import kio.read as r
->>> files = r.readfile("data/simple/.d")
+>>> import kio
+>>> files = kio.readfile("data/simple/.d")
 >>> files
 ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r']
->>> tab = r.readfiles("data/simple", files)
+>>> tab = kio.readfiles("data/simple", files)
 >>> tab.keys()
 ['a', 'c', 'b', 'e', 'd', 'g', 'f', 'i', 'h', 'k', 'j', 'm', 'l', 'o', 'n', 'q', 'p', 'r']
 >>> len(tab["a"])
@@ -41,7 +42,7 @@ True
 **Reading (WIP)**
  - [x] Atoms, e.g. `8i`
  - [x] Simple Lists, e.g. `1 2 3 4`
- - [ ] Mixed Lists, e.g. `("abc";1 2 3h;1i)`
+ - [x] Mixed Lists, e.g. `("abc";1 2 3h;1i)`
  - [x] Splayed columns
  - [x] GZIP compressed files
  - [ ] KDB compressed files

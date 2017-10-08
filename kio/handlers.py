@@ -3,6 +3,54 @@ from struct import unpack
 #local libraries
 import to
 
+def mixedlist(x):
+  res = []
+  #listlength = unpack("<xi",x[:5])
+  i = 5                                                                         # skip over length
+  while i < len(x):
+    datalength = 0
+    datatype = unpack("<b", x[i])[0]                                            # 5th byte is type
+    if datatype > 0:                                                            # lists
+      itemcount = unpack("<i", x[i+2:i+6])[0]                                   # 7th & 8th bytes is length
+      if datatype == 11:                                                        # cstring
+        for j in range(itemcount):                                              # iterate along x
+          datalength += x[i+6+datalength:].find("\x00") + 1                     # find each NUL
+        res.append(simple[datatype](x[i+1:i+6+datalength]))
+      else:
+        datalength = lengths[abs(datatype)]*itemcount
+        res.append(simple[datatype](x[i+6:i+6+datalength]))
+
+      i += datalength + 6                                                       # increment i
+    else:                                                                       # list contains atoms
+      if datatype == -11:                                                       # single cstring
+        datalength = x[i:].find("\x00")
+      else:
+        datalength = lengths[abs(datatype)]
+      res.append(simple[datatype](x[i+1:i+1+datalength]))
+      i += datalength + 1
+  return res
+
+lengths = {
+   1: 1,
+   2: 16,
+   4: 1,
+   5: 2,
+   6: 4,
+   7: 8,
+   8: 4,
+   9: 8,
+  10: 1,
+ #11: n/a
+  12: 8,
+  13: 4,
+  14: 4,
+  15: 8,
+  16: 8,
+  17: 4,
+  18: 4,
+  19: 4,
+}
+
 simple = {
  # atoms
    -1: lambda x: unpack("<?", x),                                               #   1,  boolean
@@ -24,6 +72,7 @@ simple = {
   -18: lambda x: to.second(unpack("<i", x)),                                    #   4,  second
   -19: lambda x: to.time(unpack("<i", x)),                                      #   4,  time
  # lists
+   0: lambda x: mixedlist(x),
    1: lambda x: unpack("<"+(len(x)/1)*"?", x),                                  #   1,  boolean
    2: lambda x: to.UUID(unpack(">"+(len(x)/16)*"QQ", x)),                       #   16, GUID (big-endian)
    4: lambda x: unpack("<"+(len(x)/1)*"c", x),                                  #   1,  byte

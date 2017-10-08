@@ -224,3 +224,18 @@ zipLevel          | 6i
 ### Snappy
 
 TBD
+
+## mixed list
+
+**Hexdump of simple mixed list file:**
+```
+00000000: ff01 0000 0500 0000 f661 fb01 00fa 0100  .........a......
+00000010: 0000 f901 0000 0000 0000 00f4 f0fa dd29  ...............)
+00000020: d71f c807
+```
+**Explanation:**
+```
+ff01 0000           | magic header
+0500 0000           | length of mixed list
+f6                  | type of first item in list (0xf6 -> -10)
+```
